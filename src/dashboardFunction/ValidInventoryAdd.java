@@ -8,7 +8,8 @@ import baseClass.CommonMethods;
 
 public class ValidInventoryAdd extends CommonMethods
 {
-	
+
+	//Second commit ;
 	
 	public String materialName;
 	public int currentWeight;

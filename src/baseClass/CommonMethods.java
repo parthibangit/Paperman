@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import library.ConfigExcel;
 
+import org.apache.poi.ss.formula.functions.Index;
 import org.apache.poi.ss.usermodel.Cell;
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
@@ -15,6 +18,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.DataProvider;
+import org.testng.asserts.Assertion;
 
 
 public class CommonMethods extends InitializePages
@@ -420,21 +424,99 @@ public class CommonMethods extends InitializePages
 		 return materialName;
 	}
 	 
-	public int getCurrentWeight()
+	public int getCurrentWeight(int indexValue)
 	{
-	     String currentWeight=addInventory_loaders.txtCurrentStock_locator.getText();
-	     int intWeight=Integer.parseInt(currentWeight);
-	     System.out.println("Current weight is: "+intWeight);
-	     return intWeight;
+		
+		int weight=0;
+		for(int i=0;i<addInventory_loaders.txtCurrentStockCollections_locator.size();i++)
+		{
+			WebElement currentWeight=addInventory_loaders.txtCurrentStockCollections_locator.get((int)indexValue);
+			
+			if(currentWeight!=null)
+			{
+				String stringweight=currentWeight.getText();
+				weight=Integer.parseInt(stringweight);
+				break;
+			}
+		}
+		return weight;
+	     
 	}
 	
-	public void setWeightandWeightType(String weight, String weightType)
+	public Object setWeightandWeightType(String materialName, String weight, String weightType)
 	{
-		 addInventory_loaders.inWeight_locator.sendKeys(weight);
+		
 		 System.out.println("Given weight is: "+weight);
-		 Select dropWeight=new Select(addInventory_loaders.selectWeightType_locator);
-		 dropWeight.selectByValue(weightType);
-	}
+		
+		 // This list is for get index value of material names
+		 List<String> materialList=new ArrayList<String>();
+		 
+		 
+		 
+		 Object indexMaterial=null;
+		 
+		 //drop.selectByValue(weightType);
+		 
+		 for(int i=0;i<addInventory_loaders.txtMaterialNameCollections_locator.size();i++)
+		 {
+			 WebElement materialText=addInventory_loaders.txtMaterialNameCollections_locator.get(i);
+			 materialList.add(materialText.getText());
+			 
+			 if(materialList.contains(materialName))
+			 {
+			    indexMaterial=materialList.indexOf(materialName);
+			    System.out.println(indexMaterial);
+			    System.out.println(materialName);
+			    
+			    for(int j=0; j<addInventory_loaders.checkboxCollections_locator.size();j++)
+			     {
+				      @SuppressWarnings("null")
+					  WebElement checkElement=addInventory_loaders.checkboxCollections_locator.get((int)indexMaterial);
+				      
+				      if(checkElement!=null)
+				      {
+					  checkElement.click();
+					  System.out.println("Checkbox clicked"); 
+					  
+					  for(int k=0; k<addInventory_loaders.inWeightCollections_locator.size();k++)
+					   {
+						  @SuppressWarnings("null")
+						  WebElement checkElement1=addInventory_loaders.inWeightCollections_locator.get((int)indexMaterial);
+						  
+						  if(checkElement1!=null)
+						  {
+						  checkElement1.sendKeys(weight);
+						  System.out.println(weight); 	
+						  
+						  for(int l=0;l<addInventory_loaders.selectWeightTypeCollections_locator.size();l++ )
+						  {
+							  
+							  @SuppressWarnings("null")
+							  WebElement dropElement=addInventory_loaders.selectWeightTypeCollections_locator.get((int)indexMaterial);
+							  Select drop=new Select(dropElement);
+							  if(dropElement!=null)
+							  {
+								  drop.getOptions().stream().filter(V->V.getText().equalsIgnoreCase(weightType)).forEach(V->V.click());
+								  break;
+							  }
+							  
+						   }
+						  
+						  break;
+						  }
+						  
+			            }
+					  break;
+					  
+				      }
+		           }
+                 break;
+			  }
+			    
+		}
+		return indexMaterial;		
+		
+}
 	 
 	public void clickSaveButton()
 	{
@@ -450,22 +532,28 @@ public class CommonMethods extends InitializePages
 		int convertKgs= kgs*totalWeight;
 		System.out.println("Total value is: "+totalWeight);
 		System.out.println("Converted value is: "+convertKgs);
+		List<String> materialList=new ArrayList<String>();
 		
 		for (WebElement material: addInventory_loaders.txtmaterialName1_locator)
         {
-            String materialText=material.getText();
+            materialList.add(material.getText());
 
-            if (materialText.equalsIgnoreCase(materialName))
+            if (materialList.contains(materialName))
             {
-                System.out.println("material name is: "+ materialText);
-
-                for (WebElement weightKgs:addInventory_loaders.txtWeightKgs_locator)
+            	int index=materialList.indexOf(materialName);
+               
+                for (int i=0;i<addInventory_loaders.txtWeightKgs_locator.size();i++)
                 {
-                    String kgsValue = weightKgs.getText();
-                    int valueKgs = Integer.parseInt(kgsValue);
-                    if (valueKgs == convertKgs)
+                    WebElement kgsValue = addInventory_loaders.txtWeightKgs_locator.get((int) index );
+                    
+                    if (kgsValue!=null)
                     {
+                    	String stringValue=kgsValue.getText();
+                    	int intValue=Integer.parseInt(stringValue);
+                    	System.out.println("Current value is: "+intValue);
+                    	org.testng.Assert.assertEquals(intValue, convertKgs, "Value not matched");
                         System.out.println("Kga value matched - Test passed");
+                        break;
                     }
 
                 }

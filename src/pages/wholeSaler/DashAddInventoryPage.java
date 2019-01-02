@@ -38,17 +38,32 @@ public class DashAddInventoryPage
 	@FindBy(how=How.XPATH, using="//datatable-row-wrapper[1]//input[@type='checkbox']")
 	public WebElement checkbox_locator;
 	
+	@FindBy(how=How.XPATH, using="//datatable-row-wrapper//input[@type='checkbox']")
+	public List<WebElement> checkboxCollections_locator;
+	
 	@FindBy(how=How.XPATH, using="//datatable-row-wrapper[1]//datatable-body-cell[3]")
 	public WebElement txtMaterialName_locator;
+	
+	@FindBy(how=How.XPATH, using="//datatable-row-wrapper//datatable-body-cell[3]")
+	public List<WebElement> txtMaterialNameCollections_locator;
 	
 	@FindBy(how=How.XPATH, using="//datatable-row-wrapper[1]//datatable-body-cell[4]")
 	public WebElement txtCurrentStock_locator;
 	
+	@FindBy(how=How.XPATH, using="//datatable-row-wrapper//datatable-body-cell[4]")
+	public List<WebElement> txtCurrentStockCollections_locator;
+	
 	@FindBy(how=How.XPATH, using="//datatable-row-wrapper[1]//input[@type='number']")
 	public WebElement inWeight_locator;
 	
+	@FindBy(how=How.XPATH, using="//datatable-row-wrapper//input[@type='number']")
+	public List<WebElement> inWeightCollections_locator;
+
 	@FindBy(how=How.XPATH, using="//datatable-row-wrapper[1]//select[@class='custom-select selector_select']")
 	public WebElement selectWeightType_locator;
+	
+	@FindBy(how=How.XPATH, using="//datatable-row-wrapper//select[@class='custom-select selector_select']")
+	public List<WebElement> selectWeightTypeCollections_locator;
 	
 	@FindBy(how=How.XPATH, using="//button[@type='submit']")
 	public WebElement btnSave_locator;

@@ -2,8 +2,9 @@ package library;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -11,7 +12,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class Excel_config 
 {
 		
-		public static Map<String, Map<String, String>> getExcelMap() throws Exception
+		@SuppressWarnings("deprecation")
+		public static org.apache.commons.collections4.map.MultiValueMap<String, String> getExcelMap() throws Exception
 		{
 			
 			File obj1=new File("C:\\Users\\user\\TestExcel3.xlsx");
@@ -22,8 +24,8 @@ public class Excel_config
 			int rows=sheet.getLastRowNum();
 			int coloumns=sheet.getRow(0).getLastCellNum();
 			
-			Map<String, Map<String, String>> superMap=new java.util.HashMap<String, Map<String, String>>();
-			Map<String, String> childMap=new HashMap<String, String>();
+			@SuppressWarnings({ "unchecked", "rawtypes" })
+			org.apache.commons.collections4.map.MultiValueMap< String, String> superMap=new org.apache.commons.collections4.map.MultiValueMap();
 			for(int i=0; i<rows; i++)
 			{
 				
@@ -38,20 +40,20 @@ public class Excel_config
 				}
 				String keyString=keyCell.getStringCellValue();
 				String valueString=valueCell.getStringCellValue();
-				childMap.put(keyString, valueString);
+				superMap.put(keyString, valueString);
 			    }
-			
-			   superMap.put("MasterValue", childMap);
 		    }
 			return superMap;
 		}
 		
 		
-		public static String getvalue(String key) throws Exception
+		public static String getvalue(String key, String CompareValue) throws Exception
 		{
 			
-			Map<String, String> mapValue=getExcelMap().get("MasterValue");
-			String retValue=mapValue.get(key);
-			return retValue;
+			@SuppressWarnings("unchecked")
+			Collection<String> values=(Collection<String>) getExcelMap().get(key);
+			List<String> listValue=values.stream().filter(X->X.equals(CompareValue)).collect(Collectors.toList());
+			String stringValue=listValue.get(0);
+	        return stringValue;
 		}
 }

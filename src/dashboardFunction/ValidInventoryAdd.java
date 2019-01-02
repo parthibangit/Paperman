@@ -9,7 +9,11 @@ import baseClass.CommonMethods;
 public class ValidInventoryAdd extends CommonMethods
 {
 
-	//Second commit ;
+	/*
+	 * 
+	 * This test script is to verify the add inventory with weight of tons
+	 * 
+	 */
 	
 	public String materialName;
 	public int currentWeight;
@@ -25,10 +29,8 @@ public class ValidInventoryAdd extends CommonMethods
 		clickInventory();
 		clickDatePicker();
 		selectDate("21");
-		clickCheckBox();
-	    materialName=getMaterialName();
-	    currentWeight= getCurrentWeight();
-		setWeightandWeightType(Excel_config.getvalue("Weight"), Excel_config.getvalue("Unit"));
+		Object indexValue=setWeightandWeightType("PS (Polystyrene)",Excel_config.getvalue("Weight", "4"), Excel_config.getvalue("Unit","tons"));
+		currentWeight= (int) getCurrentWeight((int) indexValue);
 		clickSaveButton();
 		
 	}
@@ -37,7 +39,7 @@ public class ValidInventoryAdd extends CommonMethods
 	public void verifyAddedInventory() throws Exception
 	{
 		childTest=test.createNode("verifyAddedInventory");
-		getMaterialNameandWeightKgs(materialName,currentWeight,Excel_config.getvalue("Weight"));
+		getMaterialNameandWeightKgs("PS (Polystyrene)",currentWeight,Excel_config.getvalue("Weight", "4"));
 		
 	}
 }

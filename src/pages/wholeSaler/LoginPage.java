@@ -13,9 +13,7 @@ public class LoginPage
 	
 	public LoginPage(WebDriver driver)
 	{
-		
 		this.driver=driver;
-		
 	}
 	
 	@FindBy(how=How.XPATH, using="//input[@name='email_id']")

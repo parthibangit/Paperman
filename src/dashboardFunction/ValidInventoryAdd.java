@@ -15,11 +15,9 @@ public class ValidInventoryAdd extends CommonMethods
 	 * 
 	 */
 	
-	public String materialName;
-	public int currentWeight;
 	
-	@Test(priority=0)
-	public void verifyAddInventory() throws Exception
+	@Test(priority=0, description="This test case is for add a material weight")
+	private void verifyAddInventory() throws Exception
 	{
 		
 		test=extent.createTest("ValidInventoryAdd");
@@ -30,16 +28,16 @@ public class ValidInventoryAdd extends CommonMethods
 		clickDatePicker();
 		selectDate("21");
 		Object indexValue=setWeightandWeightType("PS (Polystyrene)",Excel_config.getvalue("Weight", "4"), Excel_config.getvalue("Unit","tons"));
-		currentWeight= (int) getCurrentWeight((int) indexValue);
+	    getCurrentWeight((int) indexValue);
 		clickSaveButton();
 		
 	}
 	
-	@Test(priority=1)
-	public void verifyAddedInventory() throws Exception
+	@Test(priority=1, description="This test case is for verify the added material weight into the inventory page")
+	private void verifyAddedInventory() throws Exception
 	{
 		childTest=test.createNode("verifyAddedInventory");
-		getMaterialNameandWeightKgs("PS (Polystyrene)",currentWeight,Excel_config.getvalue("Weight", "4"));
+		getMaterialNameandWeightKgs("PS (Polystyrene)",getcurrentStock(),Excel_config.getvalue("Weight", "4"));
 		
 	}
 }

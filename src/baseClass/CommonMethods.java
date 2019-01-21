@@ -4,21 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import library.ConfigExcel;
 
-import org.apache.poi.ss.formula.functions.Index;
 import org.apache.poi.ss.usermodel.Cell;
-import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.DataProvider;
-import org.testng.asserts.Assertion;
 
 
 public class CommonMethods extends InitializePages
@@ -31,13 +26,17 @@ public class CommonMethods extends InitializePages
 	 *  
 	 */
 	
+	 int weight=0;
+	
+	
+	
 	
 	
 	// This method is used to login the page
 	public void login()
 		{		
 			login_locators.email_locator.sendKeys("parthiban@siamcomputing.com");
-			login_locators.password_locator.sendKeys("password@123");
+			login_locators.password_locator.sendKeys("password@1234");
 		}
 
 	
@@ -344,6 +343,7 @@ public class CommonMethods extends InitializePages
 	}
 	
 	
+	@SuppressWarnings("deprecation")
 	@DataProvider(name="excelData")
 	public Object[][] objExcel() throws Exception
 	{
@@ -424,10 +424,16 @@ public class CommonMethods extends InitializePages
 		 return materialName;
 	}
 	 
+	
+	public int getcurrentStock()
+	{
+		
+		return weight;
+	}
+	
 	public int getCurrentWeight(int indexValue)
 	{
 		
-		int weight=0;
 		for(int i=0;i<addInventory_loaders.txtCurrentStockCollections_locator.size();i++)
 		{
 			WebElement currentWeight=addInventory_loaders.txtCurrentStockCollections_locator.get((int)indexValue);
@@ -551,8 +557,8 @@ public class CommonMethods extends InitializePages
                     	String stringValue=kgsValue.getText();
                     	int intValue=Integer.parseInt(stringValue);
                     	System.out.println("Current value is: "+intValue);
-                    	org.testng.Assert.assertEquals(intValue, convertKgs, "Value not matched");
-                        System.out.println("Kga value matched - Test passed");
+                    	org.testng.Assert.assertEquals(intValue, convertKgs, "Kgs value matched - Test failed");
+                        System.out.println("Kgs value matched - Test passed");
                         break;
                     }
 
